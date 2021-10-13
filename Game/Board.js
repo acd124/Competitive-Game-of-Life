@@ -6,6 +6,7 @@ class Board {
         this.game = null;
 
         this.freeplay = false;
+        this.gridOff = false;
 
         this.animation = null;
         this.animationSpeed = 1000;
@@ -56,15 +57,17 @@ class Board {
                     squareWidth,
                     squareHeight
                 );
-
-                context.beginPath();
-                context.rect(
-                    x * squareWidth,
-                    y * squareHeight,
-                    squareWidth,
-                    squareHeight
-                );
-                //context.stroke();
+                
+                if (!this.gridOff) {
+                    context.beginPath();
+                    context.rect(
+                        x * squareWidth,
+                        y * squareHeight,
+                        squareWidth,
+                        squareHeight
+                    );
+                    context.stroke();
+                }
             }
         }
     }
@@ -78,7 +81,32 @@ class Board {
         document.getElementById('generations').innerText = this.game.generations;
     }
 
+    changeRules(
+        born = document.getElementById('bornOn').value, 
+        live = document.getElementById('liveOn').value
+    ) {
+        born = born.split('')
+            .map(Number)
+            .filter((n, i, r) => !isNaN(n) && r.indexOf(n) === i)
+            .sort((a, b) => a - b);
+        live = live.split('')
+            .map(Number)
+            .filter((n, i, r) => !isNaN(n) && r.indexOf(n) === i)
+            .sort((a, b) => a - b);
+        this.game = new LifeGame(
+            this.game.x,
+            this.game.y,
+            born.length ? born : undefined,
+            live.length ? live : undefined
+        );
+        this.draw();
+        document.getElementById('generations').innerText = this.game.generations;
+        document.getElementById('bornOn').value = born.join('');
+        document.getElementById('liveOn').value = live.join('');
+    }
+
     toggleMode() { this.freeplay = !this.freeplay; }
+    toggleGrid() { this.gridOff = !this.gridOff; this.draw(); }
 
     click(e) {
         const { width, height } = this.canvas.getBoundingClientRect();

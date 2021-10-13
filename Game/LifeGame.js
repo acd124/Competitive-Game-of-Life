@@ -1,9 +1,9 @@
 class LifeGame {
-    constructor(x, y) {
+    constructor(x, y, bornOn = [2], liveOn = [2, 3]) {
         this.x = x;
         this.y = y;
-        this.bornOn = [2];
-        this.liveOn = [2, 3];
+        this.bornOn = bornOn;
+        this.liveOn = liveOn;
         this.gameState = this.newState();
         this.pastStates = [];
         this.maxPastStates = 50;
