@@ -1,0 +1,1 @@
+const board = new Board();
