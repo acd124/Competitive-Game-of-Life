@@ -18,7 +18,7 @@
         <input id="freeplay" type="checkbox" onInput="board.toggleMode()">freeplay</input>
         <input id="width" type="number" min="2" onInput="board.resize()" placeholder="width" style="width:50px"></input>
         <input id="height" type="number" min="1" onInput="board.resize()" placeholder="height" style="width:50px"></input>
-        <input id="speed" type="range" min="0.1" max="5" value="1" step="0.1" onInput="board.updateSpeed()"></input>
+        <input id="speed" type="range" min="0" max="5" value="1" step="0.1" onInput="board.updateSpeed()"></input>
         <button id="animate" type="button" onclick="board.animate()">animate</button>
         <button id="stop" type="button" onclick="board.stop()">stop</button>
         <button id="step" type="button" onclick="board.step()">step</button>

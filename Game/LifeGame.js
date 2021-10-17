@@ -6,7 +6,7 @@ class LifeGame {
         this.liveOn = liveOn;
         this.gameState = this.newState();
         this.pastStates = [];
-        this.maxPastStates = 50;
+        this.maxPastStates = 1000;
 
         this.generations = 0;
         //this.initStart();
@@ -64,7 +64,8 @@ class LifeGame {
         this.generations++;
         this.gameState = nextGen;
 
-        
+        if (this.pastStates.includes(this.stringState(this.gameState)))
+            console.log('repeating', this.generations);
     }
 
     neighborsOf(x, y) {

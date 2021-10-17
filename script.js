@@ -16,3 +16,16 @@ function rightWall() {
     for (let i = 1; i < 64; i += 2) board.game.toggleSquare(63, i);
     board.draw();
 }
+
+function centerSquare () {
+    const minX = Math.ceil(board.game.x / 2) - 1;
+    const maxX = Math.floor(board.game.x / 2);
+    const minY = Math.ceil(board.game.y / 2) - 1;
+    const maxY = Math.floor(board.game.y / 2);
+
+    board.game.setSquare(minX, minY, 2);
+    board.game.setSquare(minX, maxY, 2);
+    board.game.setSquare(maxX, maxY, 2);
+    board.game.setSquare(maxX, minY, 2);
+    board.draw();
+}

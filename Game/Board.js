@@ -28,15 +28,17 @@ class Board {
     }
 
     animate() {
+        if (this.animation !== null) return;
         this.animation = setTimeout(() => {
             this.step();
+            this.animation = null;
             this.animate();
         }, this.animationSpeed);
     }
 
     stop() {
         clearInterval(this.animation);
-        delete this.animation;
+        this.animation = null;
     }
 
     updateSpeed() {
@@ -45,9 +47,12 @@ class Board {
 
     draw() {
         const context = this.canvas.getContext('2d');
+        context.lineWidth = 0.5;
         const grid = this.game.gameState;
         const squareWidth = this.canvas.width / this.game.x;
         const squareHeight = this.canvas.height / this.game.y;
+
+        context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         for (let y = 0; y < grid.length; y++) {
             for (let x = 0; x < grid[y].length; x++) {
                 context.fillStyle = this.COLORS[grid[y][x]];
@@ -74,9 +79,16 @@ class Board {
 
     resize(
         x = document.getElementById('width').value || 16, 
-        y = document.getElementById('height').value || 16
+        y = document.getElementById('height').value || 16,
     ) {
-        this.game = new LifeGame(Math.floor(x), Math.floor(y));
+        const born = document.getElementById('bornOn').value.split('').map(Number);
+        const live = document.getElementById('liveOn').value.split('').map(Number);
+        this.game = new LifeGame(
+            Math.floor(x),
+            Math.floor(y),
+            born.length ? born : undefined,
+            live.length ? live : undefined
+        );
         this.draw();
         document.getElementById('generations').innerText = this.game.generations;
     }
