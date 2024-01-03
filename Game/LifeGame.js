@@ -1,9 +1,11 @@
 class LifeGame {
-    constructor(x, y, bornOn = [2], liveOn = [2, 3]) {
+    constructor(x, y, bornOn = [2], liveOn = [2, 3], parasite = false, wrap = false) {
         this.x = x;
         this.y = y;
         this.bornOn = bornOn;
         this.liveOn = liveOn;
+        this.parasite = !!parasite;
+        this.wrap = !!wrap;
         this.gameState = this.newState();
         this.pastStates = [];
         this.maxPastStates = 1000;
@@ -50,11 +52,13 @@ class LifeGame {
                 const neighbors = this.neighborsOf(j, i);
                 const twos = neighbors.filter(n => n === 2).length;
                 const threes = neighbors.filter(n => n === 3).length;
-                nextGen[i][j] = !this.liveOn.includes(neighbors.length) &&
-                    (!this.bornOn.includes(neighbors.length) || this.gameState[i][j]) ? 0
+                nextGen[i][j] = !this.liveOn.includes(neighbors.length) && 
+                    (!this.bornOn.includes(neighbors.length) || this.gameState[i][j]) ? 0 // death
                     : this.bornOn.includes(neighbors.length) && !this.gameState[i][j]
-                    ? (twos === threes ? 1 : twos > threes ? 2 : 3)
-                    : this.gameState[i][j];
+                    ? (twos === threes ? (this.parasite ? 3 : 1) : twos > threes ? 2 : 3) // born
+                    : this.gameState[i][j]
+                    ? (this.parasite && twos > threes ? 2 : this.gameState[i][j]) //continue
+                    : 0; // continue dead
             }
         }
         const pastState = this.stringState(this.gameState)
@@ -72,8 +76,8 @@ class LifeGame {
         const neighbors = [];
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
-                if ((i === j && j === 0) || !this.inBounds(x + j, y + i)) continue;
-                neighbors.push(this.gameState[y + i][x + j]);
+                if ((i === j && j === 0) || (!this.wrap && !this.inBounds(x + j, y + i))) continue;
+                neighbors.push(this.wrap ? this.gameState[(y + i + this.y) % this.y][(x + j + this.x) % this.x] : this.gameState[y + i][x + j]);
             }
         }
         return neighbors.filter(n => n);

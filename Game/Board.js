@@ -9,7 +9,7 @@ class Board {
         this.gridOff = false;
 
         this.animation = null;
-        this.animationSpeed = 1000;
+        this.animationSpeed = 100;
 
         this.canvas.onclick = this.click.bind(this);
         this.resize();
@@ -42,7 +42,7 @@ class Board {
     }
 
     updateSpeed() {
-        this.animationSpeed = document.getElementById('speed').value * 1000;
+        this.animationSpeed = (document.getElementById('speed').value ** 2) * 100;
     }
 
     draw() {
@@ -87,7 +87,9 @@ class Board {
             Math.floor(x),
             Math.floor(y),
             born.length ? born : undefined,
-            live.length ? live : undefined
+            live.length ? live : undefined,
+            this.game ? this.game.parasite : false,
+            this.game ? this.game.wrap : false
         );
         this.draw();
         document.getElementById('generations').innerText = this.game.generations;
@@ -109,7 +111,9 @@ class Board {
             this.game.x,
             this.game.y,
             born.length ? born : undefined,
-            live.length ? live : undefined
+            live.length ? live : undefined,
+            this.game.parasite,
+            this.game.wrap
         );
         this.draw();
         document.getElementById('generations').innerText = this.game.generations;
@@ -117,6 +121,19 @@ class Board {
         document.getElementById('liveOn').value = live.join('');
     }
 
+    toggleWrap() {
+        this.game = new LifeGame(
+            this.game.x,
+            this.game.y,
+            this.game.bornOn,
+            this.game.liveOn,
+            this.game.parasite,
+            !this.game.wrap
+        );
+        this.draw();
+    }
+
+    toggleParasite() { this.game.parasite = !this.game.parasite }
     toggleMode() { this.freeplay = !this.freeplay; }
     toggleGrid() { this.gridOff = !this.gridOff; this.draw(); }
 

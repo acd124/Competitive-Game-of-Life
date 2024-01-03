@@ -16,6 +16,8 @@
         </canvas>
         <input id="gridToggle" type="checkbox" onInput="board.toggleGrid()">grid off</input>
         <input id="freeplay" type="checkbox" onInput="board.toggleMode()">freeplay</input>
+        <input id="wrap" type="checkbox" onInput="board.toggleWrap()">wrap</input>
+        <input id="parasite" type="checkbox" onInput="board.toggleParasite()">parasite</input>
         <input id="width" type="number" min="2" onInput="board.resize()" placeholder="width" style="width:50px"></input>
         <input id="height" type="number" min="1" onInput="board.resize()" placeholder="height" style="width:50px"></input>
         <input id="speed" type="range" min="0" max="5" value="1" step="0.1" onInput="board.updateSpeed()"></input>
